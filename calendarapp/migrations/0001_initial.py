@@ -29,9 +29,10 @@ class Migration(migrations.Migration):
                 ("created_at", models.DateTimeField(auto_now_add=True)),
                 ("updated_at", models.DateTimeField(auto_now=True)),
                 ("title", models.CharField(max_length=200, unique=True)),
-                ("description", models.TextField()),
                 ("start_time", models.DateTimeField()),
                 ("end_time", models.DateTimeField()),
+                ("division", models.CharField(max_length=200)),
+                ("room", models.CharField(max_length=200)),
                 (
                     "user",
                     models.ForeignKey(

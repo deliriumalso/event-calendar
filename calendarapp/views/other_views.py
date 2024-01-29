@@ -60,15 +60,17 @@ def create_event(request):
     form = EventForm(request.POST or None)
     if request.POST and form.is_valid():
         title = form.cleaned_data["title"]
-        description = form.cleaned_data["description"]
         start_time = form.cleaned_data["start_time"]
         end_time = form.cleaned_data["end_time"]
+        division = form.cleaned_data["division"]
+        room = form.cleaned_data["room"]
         Event.objects.get_or_create(
             user=request.user,
             title=title,
-            description=description,
             start_time=start_time,
             end_time=end_time,
+            division=division,
+            room=room,
         )
         return HttpResponseRedirect(reverse("calendarapp:calendar"))
     return render(request, "event.html", {"form": form})
@@ -76,7 +78,7 @@ def create_event(request):
 
 class EventEdit(generic.UpdateView):
     model = Event
-    fields = ["title", "description", "start_time", "end_time"]
+    fields = ["title", "start_time", "end_time", "division", "room"]
     template_name = "event.html"
 
 
@@ -127,7 +129,8 @@ class CalendarViewNew(LoginRequiredMixin, generic.View):
                     "title": event.title,
                     "start": event.start_time.strftime("%Y-%m-%dT%H:%M:%S"),
                     "end": event.end_time.strftime("%Y-%m-%dT%H:%M:%S"),
-                    "description": event.description,
+                    "division": event.division,
+                    "room": event.room,
                 }
             )
         
